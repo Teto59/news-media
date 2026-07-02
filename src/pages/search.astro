@@ -1,0 +1,54 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="検索" description="記事をキーワードで検索します">
+  <div class="search-page">
+    <h1 class="font-mincho">検索</h1>
+    <div id="search"></div>
+  </div>
+</Base>
+
+<link rel="stylesheet" href="/pagefind/pagefind-ui.css" />
+<script is:inline src="/pagefind/pagefind-ui.js"></script>
+<script is:inline>
+  window.addEventListener("DOMContentLoaded", () => {
+    if (window.PagefindUI) {
+      new PagefindUI({ element: "#search", showSubResults: true, showImages: false });
+    }
+  });
+</script>
+
+<style>
+  .search-page {
+    max-width: 44rem;
+    margin: 0 auto;
+    padding: 2.5rem 1.25rem 5rem;
+  }
+
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    margin: 0 0 1.5rem;
+  }
+
+  /* Pagefind UIをデザイントークンに合わせる(トークン経由。hex直書きなし) */
+  #search {
+    --pagefind-ui-primary: var(--ai);
+    --pagefind-ui-text: var(--ink);
+    --pagefind-ui-background: var(--surface);
+    --pagefind-ui-border: var(--line);
+    --pagefind-ui-tag: var(--line);
+    --pagefind-ui-border-width: 1px;
+    --pagefind-ui-border-radius: var(--radius);
+    --pagefind-ui-image-border-radius: var(--radius);
+    --pagefind-ui-font: var(--font-gothic);
+  }
+
+  /* Pagefindのmarkはブラウザ既定(黄色)に戻るため、トークンの朱で上書きする */
+  #search :global(mark) {
+    background: var(--shu);
+    color: var(--paper);
+    padding: 0 0.1em;
+    border-radius: var(--radius);
+  }
+</style>
