@@ -7,6 +7,7 @@ tldr:
   - "6月30日に規制解除、7月1日にFable 5提供再開"
 pubDate: 2026-07-02
 tags: ["政策", "テック", "AI"]
+thumb: "/thumbs/2026-07-02-claude-fable-5-export-controls.png"
 sources:
   - name: "Claude Fable 5 and Claude Mythos 5"
     url: "https://www.anthropic.com/news/claude-fable-5-mythos-5"
