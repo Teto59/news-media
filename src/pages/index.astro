@@ -1,45 +1,47 @@
 ---
-import { getCollection } from "astro:content";
 import Base from "../layouts/Base.astro";
+import ArticleCard from "../components/ArticleCard.astro";
+import { getPublishedArticles } from "../lib/articles";
 
-const articles = (await getCollection("articles")).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
+const articles = await getPublishedArticles();
+const [featured, ...rest] = articles;
 ---
 
 <Base>
-  <div class="card-grid">
+  <div class="top-wrap">
     {
-      articles.map((article) => (
-        <a class="card" href={`/articles/${article.id}/`}>
-          <img class="card-thumb" src={`/thumbs/${article.id}.svg`} alt="" width="800" height="450" />
-          <div class="card-body">
-            <ul class="card-tags">
-              {article.data.tags.map((tag) => (
-                <li class="tag-chip font-mono">{tag}</li>
-              ))}
-            </ul>
-            <h2 class="card-title font-mincho">{article.data.title}</h2>
-            <p class="card-lead">{article.data.lead}</p>
-            <p class="card-date font-mono">
-              {article.data.pubDate.toLocaleDateString("ja-JP", {
-                year: "numeric",
-                month: "2-digit",
-                day: "2-digit",
-              })}
-            </p>
+      featured ? (
+        <>
+          <div class="featured-slot">
+            <ArticleCard article={featured} featured index={0} />
           </div>
-        </a>
-      ))
+          {rest.length > 0 && (
+            <div class="card-grid">
+              {rest.map((article, i) => (
+                <ArticleCard article={article} index={i + 1} />
+              ))}
+            </div>
+          )}
+        </>
+      ) : (
+        <p class="empty-state">まだ公開記事がありません。近日公開予定です。</p>
+      )
     }
   </div>
 </Base>
 
 <style>
-  .card-grid {
+  .top-wrap {
     max-width: 72rem;
     margin: 0 auto;
     padding: 2rem 1.25rem 3rem;
+  }
+
+  .featured-slot {
+    margin-bottom: 1.5rem;
+  }
+
+  .card-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
@@ -57,72 +59,9 @@ const articles = (await getCollection("articles")).sort(
     }
   }
 
-  .card {
-    display: block;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    text-decoration: none;
-    color: inherit;
-    overflow: hidden;
-    transition: all 160ms ease-out;
-  }
-
-  .card:hover {
-    border-color: var(--ai);
-    transform: translateY(-2px);
-  }
-
-  .card-thumb {
-    display: block;
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    object-fit: cover;
-    border-bottom: 1px solid var(--line);
-  }
-
-  .card-body {
-    padding: 1rem 1.1rem 1.25rem;
-  }
-
-  .card-tags {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    margin: 0 0 0.6rem;
-    padding: 0;
-  }
-
-  .tag-chip {
-    font-size: 0.7rem;
-    color: var(--ai);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: 0.1rem 0.45rem;
-  }
-
-  .card-title {
-    font-size: 1.1rem;
-    line-height: 1.5;
-    margin: 0 0 0.5rem;
-    color: var(--ink);
-  }
-
-  .card-lead {
-    font-size: 0.9rem;
-    line-height: 1.7;
+  .empty-state {
     color: var(--ink-2);
-    margin: 0 0 0.6rem;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .card-date {
-    font-size: 0.75rem;
-    color: var(--ink-2);
-    margin: 0;
+    text-align: center;
+    padding: 4rem 1rem;
   }
 </style>

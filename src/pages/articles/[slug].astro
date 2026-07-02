@@ -1,0 +1,96 @@
+---
+import { render } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import TagChips from "../../components/TagChips.astro";
+import TldrBox from "../../components/TldrBox.astro";
+import SourceList from "../../components/SourceList.astro";
+import CorrectionNote from "../../components/CorrectionNote.astro";
+import RelatedArticles from "../../components/RelatedArticles.astro";
+import { getPublishedArticles, formatDate } from "../../lib/articles";
+
+export async function getStaticPaths() {
+  const articles = await getPublishedArticles();
+  return articles.map((article) => ({
+    params: { slug: article.id },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+const { Content } = await render(article);
+const allArticles = await getPublishedArticles();
+
+const charCount = (article.body ?? "").length;
+const readMinutes = Math.max(1, Math.ceil(charCount / 500));
+---
+
+<Base
+  title={article.data.title}
+  description={article.data.lead}
+  image={`/og/${article.id}.png`}
+  type="article"
+>
+  <article class="article-page">
+    <h1 class="article-title font-mincho">{article.data.title}</h1>
+    <div class="article-meta">
+      <span class="font-mono">{formatDate(article.data.pubDate)}</span>
+      <span class="meta-sep">・</span>
+      <TagChips tags={article.data.tags} />
+      <span class="meta-sep">・</span>
+      <span class="font-mono">読了目安 {readMinutes}分</span>
+    </div>
+
+    <TldrBox items={article.data.tldr} />
+
+    <div class="article-body">
+      <Content />
+    </div>
+
+    <SourceList sources={article.data.sources} />
+
+    {article.data.corrections.length > 0 && <CorrectionNote corrections={article.data.corrections} />}
+
+    <RelatedArticles current={article} articles={allArticles} />
+  </article>
+</Base>
+
+<style>
+  .article-page {
+    max-width: 44rem;
+    margin: 0 auto;
+    padding: 2.5rem 1.25rem 4rem;
+  }
+
+  .article-title {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    line-height: 1.4;
+    margin: 0 0 1rem;
+  }
+
+  .article-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    color: var(--ink-2);
+    font-size: 0.85rem;
+  }
+
+  .meta-sep {
+    color: var(--line);
+  }
+
+  .article-body {
+    max-width: 38em;
+    margin: 0 auto;
+  }
+
+  .article-body :global(h2) {
+    font-size: 1.2rem;
+    margin: 2rem 0 0.8rem;
+  }
+
+  .article-body :global(p) {
+    margin: 0 0 1.1rem;
+  }
+</style>

@@ -1,0 +1,47 @@
+---
+interface Props {
+  tags: string[];
+}
+const { tags } = Astro.props;
+---
+
+<ul class="tag-chips">
+  {
+    tags.map((tag) => (
+      <li>
+        <a class="tag-chip font-mono" href={`/tags/${encodeURIComponent(tag)}/`}>
+          {tag}
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .tag-chips {
+    position: relative;
+    z-index: 1;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  .tag-chip {
+    display: inline-block;
+    font-size: 0.7rem;
+    color: var(--ai);
+    text-decoration: none;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 0.1rem 0.45rem;
+    transition: all 160ms ease-out;
+  }
+
+  .tag-chip:hover {
+    border-color: var(--ai);
+    background: var(--surface);
+  }
+</style>

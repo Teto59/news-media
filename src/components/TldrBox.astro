@@ -1,0 +1,40 @@
+---
+interface Props {
+  items: string[];
+}
+const { items } = Astro.props;
+---
+
+<section class="tldr-box" aria-label="3行まとめ">
+  <p class="tldr-heading font-mono">3行まとめ</p>
+  <ul class="tldr-list">
+    {items.map((item) => <li>{item}</li>)}
+  </ul>
+</section>
+
+<style>
+  .tldr-box {
+    border-left: 3px solid var(--ai);
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem 1.1rem;
+    margin: 1.75rem 0 2.25rem;
+  }
+
+  .tldr-heading {
+    margin: 0 0 0.6rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: var(--ai);
+  }
+
+  .tldr-list {
+    margin: 0;
+    padding-left: 1.2rem;
+  }
+
+  .tldr-list li {
+    margin: 0.35rem 0;
+    line-height: 1.7;
+  }
+</style>

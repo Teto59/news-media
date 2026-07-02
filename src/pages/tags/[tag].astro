@@ -1,0 +1,57 @@
+---
+import Base from "../../layouts/Base.astro";
+import ArticleCard from "../../components/ArticleCard.astro";
+import { getPublishedArticles } from "../../lib/articles";
+
+export async function getStaticPaths() {
+  const articles = await getPublishedArticles();
+  const tagSet = new Set<string>();
+  for (const article of articles) {
+    for (const tag of article.data.tags) tagSet.add(tag);
+  }
+  return [...tagSet].map((tag) => ({ params: { tag }, props: { tag } }));
+}
+
+const { tag } = Astro.props;
+const articles = (await getPublishedArticles()).filter((article) => article.data.tags.includes(tag));
+---
+
+<Base title={`タグ: ${tag}`}>
+  <div class="tag-page">
+    <h1 class="font-mincho">#{tag}</h1>
+    <div class="card-grid">
+      {articles.map((article, i) => <ArticleCard article={article} index={i} />)}
+    </div>
+  </div>
+</Base>
+
+<style>
+  .tag-page {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 2.5rem 1.25rem 4rem;
+  }
+
+  h1 {
+    font-size: clamp(1.4rem, 3.5vw, 1.9rem);
+    margin: 0 0 1.5rem;
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 900px) {
+    .card-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 560px) {
+    .card-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

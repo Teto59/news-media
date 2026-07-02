@@ -1,0 +1,54 @@
+---
+import type { CollectionEntry } from "astro:content";
+import ArticleCard from "./ArticleCard.astro";
+
+interface Props {
+  current: CollectionEntry<"articles">;
+  articles: CollectionEntry<"articles">[];
+}
+
+const { current, articles } = Astro.props;
+
+const related = articles
+  .filter((a) => a.id !== current.id && a.data.tags.some((tag) => current.data.tags.includes(tag)))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+---
+
+{
+  related.length > 0 && (
+    <section class="related-articles" aria-label="関連記事">
+      <h2 class="section-heading font-mincho">関連記事</h2>
+      <div class="related-grid">
+        {related.map((article, i) => (
+          <ArticleCard article={article} index={i} />
+        ))}
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .related-articles {
+    margin: 2.5rem 0 1rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .section-heading {
+    font-size: 1.05rem;
+    margin: 0 0 1rem;
+  }
+
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+
+  @media (max-width: 720px) {
+    .related-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

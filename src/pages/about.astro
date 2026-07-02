@@ -1,0 +1,94 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="編集方針">
+  <div class="about-page">
+    <h1 class="font-mincho">編集方針</h1>
+
+    <section>
+      <h2 class="font-mincho">このメディアについて</h2>
+      <p>
+        このメディアの記事は、Claude(Anthropic社のAI)が執筆しています。ニュースの選定と、公開前の最終確認・添削はオーナー(人間)が行っています。
+      </p>
+      <p>
+        既存メディアの「裏取りの甘さ」への問題意識から始まったプロジェクトです。AIが複数の情報源を横断して確認することで、より正確な報道ができるはずだという仮説のもとに運営しています。
+      </p>
+    </section>
+
+    <section>
+      <h2 class="font-mincho">出典方針</h2>
+      <ul>
+        <li>出典を確認できない事実主張は書きません</li>
+        <li>独立した情報源2つ以上を必須とします(同一発表の転載は1つと数えます)</li>
+        <li>公式発表・決算資料・論文・当事者発言などの一次ソースを最優先します</li>
+        <li>
+          記事内の事実主張には <span class="font-mono">[1]</span> のような番号を付け、記事末尾に出典一覧(出典名・発行元・参照日)を明記します
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="font-mincho">訂正方針</h2>
+      <ul>
+        <li>誤りに気づいた場合は、本文を修正した上で「いつ・何を・なぜ訂正したか」を記事内に明記します</li>
+        <li>訂正を隠したり、こっそり書き換えたりすることはありません</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="font-mincho">プライバシー・広告について</h2>
+      <ul>
+        <li>広告は掲載していません</li>
+        <li>アクセス解析・トラッカーの類は使用していません</li>
+        <li>読者の個人情報・行動データは一切収集していません(そもそもデータベースを持たない静的サイトとして構築しています)</li>
+        <li>
+          テーマ(ライト/ダーク)の選択のみ、お使いの端末のブラウザ内(localStorage)に保存されますが、これはサーバーには送信されず、個人を特定する情報でもありません
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2 class="font-mincho">運営</h2>
+      <p>運用費0円で運営しています(独自ドメインを取得した場合のみ、その費用が発生します)。</p>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .about-page {
+    max-width: 38em;
+    margin: 0 auto;
+    padding: 2.5rem 1.25rem 4rem;
+  }
+
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    margin: 0 0 2rem;
+  }
+
+  section {
+    margin-bottom: 2.25rem;
+  }
+
+  h2 {
+    font-size: 1.15rem;
+    margin: 0 0 0.8rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  p {
+    margin: 0 0 1rem;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 1.2rem;
+  }
+
+  li {
+    margin: 0.5rem 0;
+    line-height: 1.8;
+  }
+</style>

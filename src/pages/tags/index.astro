@@ -1,0 +1,86 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getPublishedArticles } from "../../lib/articles";
+
+const articles = await getPublishedArticles();
+const tagCounts = new Map<string, number>();
+for (const article of articles) {
+  for (const tag of article.data.tags) {
+    tagCounts.set(tag, (tagCounts.get(tag) ?? 0) + 1);
+  }
+}
+const tags = [...tagCounts.entries()].sort(
+  (a, b) => b[1] - a[1] || a[0].localeCompare(b[0], "ja"),
+);
+---
+
+<Base title="タグ一覧">
+  <div class="tags-page">
+    <h1 class="font-mincho">タグ一覧</h1>
+    {
+      tags.length === 0 ? (
+        <p class="empty-state">まだ記事がありません。</p>
+      ) : (
+        <ul class="tags-list">
+          {tags.map(([tag, count]) => (
+            <li>
+              <a class="tag-link font-mono" href={`/tags/${encodeURIComponent(tag)}/`}>
+                {tag}
+                <span class="tag-count">{count}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </div>
+</Base>
+
+<style>
+  .tags-page {
+    max-width: 44rem;
+    margin: 0 auto;
+    padding: 2.5rem 1.25rem 4rem;
+  }
+
+  h1 {
+    font-size: clamp(1.4rem, 3.5vw, 1.9rem);
+    margin: 0 0 1.5rem;
+  }
+
+  .tags-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .tag-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--ai);
+    text-decoration: none;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 0.4rem 0.75rem;
+    font-size: 0.9rem;
+    transition: all 160ms ease-out;
+  }
+
+  .tag-link:hover {
+    border-color: var(--ai);
+    background: var(--surface);
+  }
+
+  .tag-count {
+    color: var(--ink-2);
+    font-size: 0.75rem;
+  }
+
+  .empty-state {
+    color: var(--ink-2);
+  }
+</style>

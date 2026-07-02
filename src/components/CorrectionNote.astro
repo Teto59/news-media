@@ -1,0 +1,62 @@
+---
+import { formatDate } from "../lib/articles";
+
+interface Correction {
+  date: Date;
+  description: string;
+}
+
+interface Props {
+  corrections: Correction[];
+}
+
+const { corrections } = Astro.props;
+---
+
+<section class="correction-note" aria-label="訂正履歴">
+  <h2 class="section-heading font-mincho">訂正</h2>
+  <ul>
+    {
+      corrections.map((c) => (
+        <li>
+          <span class="correction-date font-mono">{formatDate(c.date)}</span>
+          <span>{c.description}</span>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style>
+  .correction-note {
+    margin: 2rem 0;
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--shu);
+    border-radius: var(--radius);
+    background: var(--surface);
+  }
+
+  .section-heading {
+    font-size: 0.95rem;
+    color: var(--shu);
+    margin: 0 0 0.7rem;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    margin: 0.5rem 0;
+    line-height: 1.7;
+    font-size: 0.9rem;
+  }
+
+  .correction-date {
+    color: var(--shu);
+    margin-right: 0.6rem;
+  }
+</style>

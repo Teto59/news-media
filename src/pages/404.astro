@@ -1,0 +1,53 @@
+---
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="ページが見つかりません">
+  <div class="not-found">
+    <p class="code font-mono">404</p>
+    <h1 class="font-mincho">ページが見つかりませんでした</h1>
+    <p>URLが変更されたか、削除された可能性があります。</p>
+    <a class="home-link" href="/">トップページへ戻る</a>
+  </div>
+</Base>
+
+<style>
+  .not-found {
+    max-width: 32rem;
+    margin: 0 auto;
+    padding: 5rem 1.25rem;
+    text-align: center;
+  }
+
+  .code {
+    color: var(--ink-2);
+    font-size: 0.9rem;
+    letter-spacing: 0.1em;
+    margin: 0 0 0.5rem;
+  }
+
+  h1 {
+    font-size: clamp(1.4rem, 3.5vw, 1.9rem);
+    margin: 0 0 1rem;
+  }
+
+  p {
+    color: var(--ink-2);
+    margin: 0 0 2rem;
+  }
+
+  .home-link {
+    display: inline-block;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 0.6rem 1.25rem;
+    color: var(--ai);
+    text-decoration: none;
+    transition: all 160ms ease-out;
+  }
+
+  .home-link:hover {
+    border-color: var(--ai);
+    background: var(--surface);
+  }
+</style>
