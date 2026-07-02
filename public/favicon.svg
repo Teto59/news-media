@@ -1,10 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-    <rect width="64" height="64" fill="#F6F1E7" />
-    <text x="32" y="46" text-anchor="middle" font-family="'Shippori Mincho B1', 'Hiragino Mincho ProN', serif" font-weight="700" font-size="40" fill="#211D16">報</text>
-    <style>
-        @media (prefers-color-scheme: dark) {
-            rect { fill: #191611; }
-            text { fill: #EBE4D3; }
-        }
-    </style>
+    <!-- Masthead の朱の角印(.hanko)と揃えたデザイン。SVGはCSSトークンを参照できないため、
+         editorial/DESIGN_NOTES.md 記載のトークン値を直書きしている(--shu: #C2451E / --paper: #F6F1E7 / --radius相当の角丸)。
+         ダーク/ライトどちらでも朱地は変えず、角印としての視認性を優先する。 -->
+    <rect width="64" height="64" rx="2" fill="#C2451E" />
+    <text x="32" y="45" text-anchor="middle" font-family="'Shippori Mincho B1', 'Hiragino Mincho ProN', serif" font-weight="700" font-size="38" fill="#F6F1E7">紀</text>
 </svg>

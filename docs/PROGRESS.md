@@ -13,6 +13,6 @@
 
 ## メモ
 
-- サイト名は保留中。`src/consts.ts` の定数で仮称運用
+- サイト名は「Chronica」に確定(2026-07-02)。`src/consts.ts` の `SITE_NAME` に反映済み
 - ホスティング: Cloudflare Pages / URL: 無料サブドメイン(`*.pages.dev`)で開始
 - `src/consts.ts` の `SITE_URL` はPhase 5でCloudflare Pagesのプロジェクト名確定まで仮URL(`https://newsmedia-placeholder.pages.dev`)。RSS/sitemap/OGPの絶対URL生成に使用しているため、Phase 5で実URLに更新すること
