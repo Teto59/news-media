@@ -69,3 +69,4 @@ Interpret creatively and make unexpected choices that feel genuinely designed fo
 - `/article` — 記事執筆ワークフロー(Phase 4で導入)
 - `/publish` — 差分学習+公開ワークフロー(Phase 4で導入)
 - `/retro` — 教訓の整理・昇格ワークフロー(Phase 4で導入)
+- `/correct <slug> <誤りの内容>` — 公開済み記事の訂正ワークフロー
