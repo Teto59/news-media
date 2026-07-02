@@ -68,6 +68,9 @@ const thumbSrc = article.data.thumb ?? `/thumbs/${article.id}.svg`;
   .card-thumb {
     display: block;
     width: 100%;
+    /* height属性(高さのヒント)を打ち消す。これがないと高さ450px固定となり、
+       aspect-ratioが効かずobject-fit: coverで左右が見切れる */
+    height: auto;
     aspect-ratio: 16 / 9;
     object-fit: cover;
     border-bottom: 1px solid var(--line);
