@@ -129,14 +129,17 @@ const thumbSrc = article.data.thumb ?? `/thumbs/${article.id}.svg`;
     grid-template-columns: 1.3fr 1fr;
   }
 
+  /* サムネは常に16:9のまま全体を表示する(クロップしない)。
+     本文がサムネより縦長の場合はサムネを上下中央に置く */
   .card-featured .card-thumb {
-    height: 100%;
-    aspect-ratio: auto;
+    aspect-ratio: 16 / 9;
+    height: auto;
+    align-self: center;
     border-bottom: none;
-    border-right: 1px solid var(--line);
   }
 
   .card-featured .card-body {
+    border-left: 1px solid var(--line);
     padding: 1.5rem 1.75rem;
     display: flex;
     flex-direction: column;
@@ -160,9 +163,12 @@ const thumbSrc = article.data.thumb ?? `/thumbs/${article.id}.svg`;
     }
 
     .card-featured .card-thumb {
-      aspect-ratio: 16 / 9;
-      border-right: none;
+      align-self: stretch;
       border-bottom: 1px solid var(--line);
+    }
+
+    .card-featured .card-body {
+      border-left: none;
     }
   }
 
