@@ -62,7 +62,7 @@ sources:
     publisher: "Gulf News"
     accessed: 2026-07-02
 corrections: []
-draft: true
+draft: false
 ---
 
 本記事の内容は2026年7月2日時点の情報です。情勢は日々変化しています。
