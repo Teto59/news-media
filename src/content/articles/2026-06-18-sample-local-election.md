@@ -6,7 +6,7 @@ tldr:
   - "出典1件・訂正なしという最小構成のダミーデータです"
   - "実在の選挙結果ではありません"
 pubDate: 2026-06-18
-tags: ["サンプル"]
+tags: ["政治", "サンプル"]
 sources:
   - name: "架空市選挙管理委員会 発表(サンプル出典)"
     url: "https://example.com/election/city-mayor-2026"

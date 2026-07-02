@@ -27,7 +27,7 @@ const readMinutes = Math.max(1, Math.ceil(charCount / 500));
 <Base
   title={article.data.title}
   description={article.data.lead}
-  image={`/og/${article.id}.png`}
+  image={article.data.thumb ?? `/og/${article.id}.png`}
   type="article"
 >
   <article class="article-page">

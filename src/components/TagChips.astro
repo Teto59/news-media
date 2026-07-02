@@ -29,12 +29,14 @@ const { tags } = Astro.props;
     padding: 0;
   }
 
+  /* 藍の色面チップ。hoverで藍地に白抜き(色はトークン由来のcolor-mixのみ) */
   .tag-chip {
     display: inline-block;
     font-size: 0.7rem;
     color: var(--ai);
     text-decoration: none;
-    border: 1px solid var(--line);
+    border: 1px solid color-mix(in srgb, var(--ai) 45%, transparent);
+    background: color-mix(in srgb, var(--ai) 8%, transparent);
     border-radius: var(--radius);
     padding: 0.1rem 0.45rem;
     transition: all 160ms ease-out;
@@ -42,6 +44,7 @@ const { tags } = Astro.props;
 
   .tag-chip:hover {
     border-color: var(--ai);
-    background: var(--surface);
+    background: var(--ai);
+    color: var(--paper);
   }
 </style>

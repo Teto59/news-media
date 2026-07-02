@@ -48,6 +48,8 @@ html[data-theme="dark"] {
 
 body {
   margin: 0;
+  /* ページ最上部の藍帯(新聞のカラーバー) */
+  border-top: 3px solid var(--ai);
   background: var(--paper);
   color: var(--ink);
   font-family: var(--font-gothic);

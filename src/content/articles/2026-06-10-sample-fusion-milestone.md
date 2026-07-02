@@ -7,7 +7,7 @@ tldr:
   - "実在の研究成果ではありません"
 pubDate: 2026-06-10
 updatedDate: 2026-06-12
-tags: ["サンプル", "科学"]
+tags: ["科学", "サンプル"]
 sources:
   - name: "架空研究機構 プレスリリース(サンプル出典)"
     url: "https://example.com/press/fusion-milestone"

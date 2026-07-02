@@ -21,6 +21,9 @@ const articles = defineCollection({
         }),
       )
       .min(1),
+    // サムネの手動差し替え(任意)。"/thumbs/xxx.jpg" のように public/ 配下のパスを指定する。
+    // 未指定なら自動生成SVG(/thumbs/<slug>.svg)を使う。権利上使える画像のみ(DESIGN_NOTES.md参照)
+    thumb: z.string().startsWith("/").optional(),
     corrections: z
       .array(
         z.object({

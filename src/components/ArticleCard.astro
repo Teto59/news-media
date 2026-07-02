@@ -10,18 +10,21 @@ interface Props {
 }
 
 const { article, index = 0, featured = false } = Astro.props;
+// frontmatterのthumbが指定されていればそれを、なければ自動生成SVGを使う
+const thumbSrc = article.data.thumb ?? `/thumbs/${article.id}.svg`;
 ---
 
 <div class={`card ${featured ? "card-featured" : ""}`} style={`animation-delay: ${index * 40}ms`}>
   <img
     class="card-thumb"
-    src={`/thumbs/${article.id}.svg`}
+    src={thumbSrc}
     alt=""
     width={featured ? 1200 : 800}
     height={featured ? 675 : 450}
     loading={featured ? "eager" : "lazy"}
   />
   <div class="card-body">
+    {featured && <p class="card-label font-mono">最新</p>}
     <TagChips tags={article.data.tags} />
     <h2 class="card-title font-mincho">
       <a class="card-title-link" href={`/articles/${article.id}/`}>{article.data.title}</a>
@@ -92,10 +95,31 @@ const { article, index = 0, featured = false } = Astro.props;
     overflow: hidden;
   }
 
+  /* 日付行の上に細罫を入れて紙面の「段」の区切りを出す */
   .card-date {
     font-size: 0.75rem;
     color: var(--ink-2);
     margin: 0;
+    border-top: 1px solid var(--line);
+    padding-top: 0.55rem;
+  }
+
+  /* 最新記事の朱ラベル(朱の短い罫+文字) */
+  .card-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    color: var(--shu);
+    margin: 0 0 0.7rem;
+  }
+
+  .card-label::before {
+    content: "";
+    width: 1.4rem;
+    height: 2px;
+    background: var(--shu);
   }
 
   /* 最新1本の大型カード: サムネと本文を横並びにする */

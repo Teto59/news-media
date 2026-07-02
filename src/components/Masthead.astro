@@ -11,7 +11,10 @@ const today = new Date().toLocaleDateString("ja-JP", {
 
 <header class="masthead">
   <div class="masthead-row">
-    <a href="/" class="logotype font-mincho">{SITE_NAME}</a>
+    <a href="/" class="logotype font-mincho">
+      <span class="hanko font-mincho" aria-hidden="true">報</span>
+      {SITE_NAME}
+    </a>
     <span class="today font-mono">{today}</span>
   </div>
   <div class="masthead-actions">
@@ -21,7 +24,9 @@ const today = new Date().toLocaleDateString("ja-JP", {
 </header>
 
 <style>
+  /* 題字の下は新聞らしい二重罫(墨の太罫+細罫) */
   .masthead {
+    position: relative;
     display: flex;
     align-items: baseline;
     justify-content: space-between;
@@ -30,7 +35,32 @@ const today = new Date().toLocaleDateString("ja-JP", {
     max-width: 72rem;
     margin: 0 auto;
     padding: 1.5rem 1.25rem 1rem;
-    border-bottom: 1px solid var(--line);
+    border-bottom: 2px solid var(--ink);
+  }
+
+  .masthead::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -6px;
+    height: 1px;
+    background: var(--line);
+  }
+
+  /* faviconと揃えた朱の角印。題字の左に添える */
+  .hanko {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.15em;
+    height: 1.15em;
+    background: var(--shu);
+    color: var(--paper);
+    font-size: 0.55em;
+    font-weight: 700;
+    border-radius: var(--radius);
+    transform: translateY(-0.12em);
   }
 
   .masthead-row {
