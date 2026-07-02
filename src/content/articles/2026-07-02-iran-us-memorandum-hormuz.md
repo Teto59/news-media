@@ -7,6 +7,7 @@ tldr:
   - "ホルムズ海峡の脅威度は「相当」。通航は続きますが、機雷除去や保険料の高止まりで正常化は途上です"
 pubDate: 2026-07-02
 tags: ["国際", "政治", "経済"]
+thumb: "/thumbs/2026-07-02-iran-us-memorandum-hormuz.png"
 sources:
   - name: "Read the US account of unreleased 14-point Iran ceasefire memorandum"
     url: "https://www.aljazeera.com/news/2026/6/17/read-the-us-account-of-unreleased-14-point-iran-ceasefire-memorandum"
