@@ -1,0 +1,132 @@
+---
+import Base from "../layouts/Base.astro";
+import { getPublishedArticles, formatDate } from "../lib/articles";
+
+const articles = await getPublishedArticles();
+
+// pubDate降順のまま年月ごとにグルーピングする(例: "2026年7月")
+const groups: { label: string; articles: typeof articles }[] = [];
+for (const article of articles) {
+  const d = article.data.pubDate;
+  const label = `${d.getFullYear()}年${d.getMonth() + 1}月`;
+  const last = groups[groups.length - 1];
+  if (last && last.label === label) {
+    last.articles.push(article);
+  } else {
+    groups.push({ label, articles: [article] });
+  }
+}
+---
+
+<Base title="アーカイブ">
+  <div class="archive-page">
+    <h1 class="font-mincho">アーカイブ</h1>
+    {
+      groups.length === 0 ? (
+        <p class="empty-state">まだ公開記事がありません。</p>
+      ) : (
+        groups.map((group) => (
+          <section class="month-group">
+            <h2 class="section-head font-mincho">{group.label}</h2>
+            <ul class="month-list">
+              {group.articles.map((article) => (
+                <li>
+                  <span class="entry-date font-mono">{formatDate(article.data.pubDate)}</span>
+                  <a class="entry-title" href={`/articles/${article.id}/`}>
+                    {article.data.title}
+                  </a>
+                  <span class="entry-tag font-mono">{article.data.tags[0]}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))
+      )
+    }
+  </div>
+</Base>
+
+<style>
+  .archive-page {
+    max-width: 44rem;
+    margin: 0 auto;
+    padding: 2.5rem 1.25rem 4rem;
+  }
+
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    margin: 0 0 2rem;
+  }
+
+  .month-group {
+    margin-bottom: 2.25rem;
+  }
+
+  /* トップページの段見出しと同じ意匠: 藍の角マーク+明朝+下罫線 */
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 1.05rem;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 0.5rem;
+    margin: 0 0 0.75rem;
+  }
+
+  .section-head::before {
+    content: "";
+    width: 0.55em;
+    height: 0.55em;
+    background: var(--ai);
+  }
+
+  .month-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .month-list li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .month-list li:last-child {
+    border-bottom: none;
+  }
+
+  .entry-date {
+    flex: none;
+    color: var(--ink-2);
+    font-size: 0.8rem;
+  }
+
+  .entry-title {
+    flex: 1 1 auto;
+    color: var(--ink);
+    text-decoration: none;
+    line-height: 1.6;
+    border-bottom: 1px solid transparent;
+    transition: all 160ms ease-out;
+  }
+
+  .entry-title:hover {
+    color: var(--ai);
+    border-bottom-color: var(--ai);
+  }
+
+  .entry-tag {
+    flex: none;
+    color: var(--ink-2);
+    font-size: 0.72rem;
+  }
+
+  .empty-state {
+    color: var(--ink-2);
+  }
+</style>

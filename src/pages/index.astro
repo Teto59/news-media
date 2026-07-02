@@ -5,6 +5,9 @@ import { getPublishedArticles } from "../lib/articles";
 
 const articles = await getPublishedArticles();
 const [featured, ...rest] = articles;
+// トップは最新12本まで(大型カード1+グリッド11)。それ以前はアーカイブページで見せる
+const visibleRest = rest.slice(0, 11);
+const hasArchive = articles.length > 12;
 ---
 
 <Base>
@@ -15,14 +18,21 @@ const [featured, ...rest] = articles;
           <div class="featured-slot">
             <ArticleCard article={featured} featured index={0} />
           </div>
-          {rest.length > 0 && (
+          {visibleRest.length > 0 && (
             <>
               <h2 class="section-head font-mincho">記事一覧</h2>
               <div class="card-grid">
-                {rest.map((article, i) => (
+                {visibleRest.map((article, i) => (
                   <ArticleCard article={article} index={i + 1} />
                 ))}
               </div>
+              {hasArchive && (
+                <p class="archive-link">
+                  <a href="/archive" class="font-mono">
+                    過去の記事一覧 →
+                  </a>
+                </p>
+              )}
             </>
           )}
         </>
@@ -86,5 +96,22 @@ const [featured, ...rest] = articles;
     color: var(--ink-2);
     text-align: center;
     padding: 4rem 1rem;
+  }
+
+  .archive-link {
+    text-align: right;
+    margin: 1.5rem 0 0;
+  }
+
+  .archive-link a {
+    color: var(--ai);
+    text-decoration: none;
+    font-size: 0.85rem;
+    border-bottom: 1px solid transparent;
+    transition: all 160ms ease-out;
+  }
+
+  .archive-link a:hover {
+    border-bottom-color: var(--ai);
   }
 </style>
