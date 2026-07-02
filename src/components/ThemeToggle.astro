@@ -1,0 +1,58 @@
+---
+---
+
+<button id="theme-toggle" class="theme-toggle" type="button" aria-label="ライト/ダーク表示切替">
+  <span class="icon icon-sun" aria-hidden="true"></span>
+  <span class="icon icon-moon" aria-hidden="true"></span>
+</button>
+
+<style>
+  .theme-toggle {
+    width: 1.75rem;
+    height: 1.75rem;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 160ms ease-out;
+  }
+
+  .theme-toggle:hover {
+    border-color: var(--ai);
+  }
+
+  .icon {
+    width: 0.85rem;
+    height: 0.85rem;
+    border-radius: 999px;
+    background: var(--ink);
+  }
+
+  .icon-moon {
+    display: none;
+  }
+
+  :global(html[data-theme="dark"]) .icon-sun {
+    display: none;
+  }
+
+  :global(html[data-theme="dark"]) .icon-moon {
+    display: block;
+  }
+</style>
+
+<script>
+  const STORAGE_KEY = "theme";
+  const button = document.getElementById("theme-toggle");
+
+  button?.addEventListener("click", () => {
+    const root = document.documentElement;
+    const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    localStorage.setItem(STORAGE_KEY, next);
+  });
+</script>

@@ -1,0 +1,45 @@
+---
+import { SITE_NAME, SITE_DESCRIPTION } from "../consts";
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <p class="footer-name font-mincho">{SITE_NAME}</p>
+    <p class="footer-desc">{SITE_DESCRIPTION}</p>
+    <p class="footer-note">広告なし・トラッカーなし・読者データ不収集</p>
+    <p class="footer-copy font-mono">&copy; {year}</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--line);
+    margin-top: 3rem;
+  }
+
+  .footer-inner {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 2rem 1.25rem;
+  }
+
+  .footer-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0 0 0.4rem;
+  }
+
+  .footer-desc,
+  .footer-note {
+    color: var(--ink-2);
+    font-size: 0.85rem;
+    margin: 0.2rem 0;
+  }
+
+  .footer-copy {
+    color: var(--ink-2);
+    font-size: 0.75rem;
+    margin: 1rem 0 0;
+  }
+</style>
