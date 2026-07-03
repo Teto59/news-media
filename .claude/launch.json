@@ -19,6 +19,12 @@
       "runtimeExecutable": "npx",
       "runtimeArgs": ["serve", "dist", "-p", "4500"],
       "port": 4500
+    },
+    {
+      "name": "serve-meetup",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "docs/meetup", "-p", "4501"],
+      "port": 4501
     }
   ]
 }

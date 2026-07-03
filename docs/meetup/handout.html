@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<title>Chronica — コードを書かない新聞づくり</title>
+<style>
+  /* Chronicaのデザイントークン(src/styles/global.css の写し。配布物のため自己完結) */
+  :root {
+    --paper: #f6f1e7;
+    --surface: #fdfbf5;
+    --ink: #211d16;
+    --ink-2: #6b6353;
+    --line: #ddd3be;
+    --ai: #2a5a8c;
+    --shu: #c2451e;
+    --radius: 2px;
+    --mincho: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Noto Serif JP", serif;
+    --gothic: "Hiragino Kaku Gothic ProN", "Yu Gothic", "YuGothic", "Noto Sans JP", sans-serif;
+    --mono: "SF Mono", Menlo, Consolas, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { background: #e8e2d4; }
+  body { font-family: var(--gothic); color: var(--ink); line-height: 1.7; }
+
+  .page {
+    width: 210mm; min-height: 297mm;
+    margin: 8mm auto; padding: 10mm 12mm 8mm;
+    background: var(--paper);
+    border-top: 3px solid var(--ai);
+    box-shadow: 0 2px 14px rgba(33,29,22,.18);
+  }
+  @page { size: A4; margin: 0; }
+  @media print {
+    html, body { background: var(--paper); }
+    .page { margin: 0; box-shadow: none; width: auto; min-height: auto; }
+  }
+
+  /* 題字 */
+  .masthead {
+    display: flex; align-items: center; gap: 6mm;
+    border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink);
+    padding: 2.5mm 0; position: relative;
+  }
+  .masthead::before, .masthead::after {
+    content: ""; position: absolute; left: 0; right: 0; height: 1px; background: var(--ink);
+  }
+  .masthead::before { top: 1.1mm; }
+  .masthead::after { bottom: 1.1mm; }
+  .brand { font-family: var(--mincho); font-weight: 800; font-size: 30px; letter-spacing: .04em; }
+  .seal {
+    width: 9mm; height: 9mm; border: 1.6px solid var(--shu); border-radius: var(--radius);
+    color: var(--shu); font-family: var(--mincho); font-weight: 700; font-size: 17px;
+    display: flex; align-items: center; justify-content: center; flex: none;
+  }
+  .masthead-note { margin-left: auto; text-align: right; font-size: 10.5px; color: var(--ink-2); line-height: 1.5; }
+  .masthead-note b { color: var(--ink); }
+
+  /* 見出し */
+  .headline { margin: 7mm 0 2mm; }
+  .headline .kicker { font-size: 12px; color: var(--ai); font-weight: 500; letter-spacing: .12em; }
+  .headline h1 { font-family: var(--mincho); font-weight: 700; font-size: 31px; line-height: 1.35; letter-spacing: .01em; }
+  .headline .dek { margin-top: 2mm; font-size: 13px; color: var(--ink-2); }
+
+  /* ループ図 */
+  figure.loop { margin: 6mm 0 0; }
+  figure.loop svg { width: 100%; height: auto; display: block; }
+
+  /* 数字ストリップ */
+  .stats { display: flex; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); margin-top: 5mm; }
+  .stat { flex: 1; padding: 3.5mm 2mm 3mm; text-align: center; }
+  .stat + .stat { border-left: 1px solid var(--line); }
+  .stat .n { font-family: var(--mincho); font-weight: 800; font-size: 24px; color: var(--ai); line-height: 1.2; }
+  .stat .n.shu { color: var(--shu); }
+  .stat .l { font-size: 10px; color: var(--ink-2); letter-spacing: .05em; }
+
+  /* 2段組 */
+  .cols { display: flex; gap: 7mm; margin-top: 6mm; }
+  .col { flex: 1; min-width: 0; }
+  h2 {
+    font-family: var(--mincho); font-weight: 700; font-size: 14.5px;
+    border-bottom: 1px solid var(--ink); padding-bottom: 1.2mm; margin-bottom: 2.5mm;
+  }
+  h2 .num { color: var(--shu); margin-right: 1.5mm; }
+  .col p, .col li { font-size: 11.5px; }
+  .col p + p { margin-top: 2mm; }
+  .col ul { padding-left: 4.5mm; }
+  .col li + li { margin-top: 1.8mm; }
+  .col b { font-weight: 700; }
+  .accent { color: var(--ai); font-weight: 700; }
+  .lesson-tag {
+    display: inline-block; font-size: 9.5px; color: var(--shu);
+    border: 1px solid var(--shu); border-radius: var(--radius);
+    padding: 0 1.2mm; margin-right: 1mm; vertical-align: 1px;
+  }
+  .motto {
+    margin-top: 3mm; padding: 2.5mm 3mm; background: var(--surface);
+    border-left: 2px solid var(--ai); border-radius: var(--radius);
+    font-family: var(--mincho); font-weight: 700; font-size: 12.5px;
+  }
+
+  /* フッター */
+  .foot {
+    margin-top: 6mm; border-top: 1px solid var(--ink); padding-top: 2.5mm;
+    display: flex; justify-content: space-between; align-items: baseline; gap: 4mm;
+    font-size: 10.5px; color: var(--ink-2);
+  }
+  .foot .urls { font-family: var(--mono); font-size: 10.5px; color: var(--ink); }
+  .foot .urls span { color: var(--ai); }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="masthead">
+    <div class="seal">紀</div>
+    <div class="brand">Chronica</div>
+    <div class="masthead-note">
+      AIが執筆する無料ニュースメディア<br />
+      <b>Claude Fable 5 Meetup Tokyo</b> 知見共有資料
+    </div>
+  </header>
+
+  <div class="headline">
+    <div class="kicker">非エンジニアの Claude Code 実運用録</div>
+    <h1>コードを書かない新聞づくり<br />── AIが書き、人間が直し、AIが学ぶ</h1>
+    <div class="dek">コードが一行も書けないオーナーが、Claude Codeだけでニュースサイトを設計・構築・運用している記録。指示はすべて日本語のルールファイル。</div>
+  </div>
+
+  <figure class="loop">
+    <svg viewBox="0 0 760 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="編集ループの図">
+      <defs>
+        <marker id="ar" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M0,0.5 L7.5,4 L0,7.5" fill="none" stroke="#6b6353" stroke-width="1.4"/>
+        </marker>
+        <marker id="arShu" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M0,0.5 L7.5,4 L0,7.5" fill="none" stroke="#c2451e" stroke-width="1.4"/>
+        </marker>
+      </defs>
+      <!-- 4つの工程 -->
+      <g font-family="Hiragino Kaku Gothic ProN, Yu Gothic, sans-serif">
+        <!-- box 1 -->
+        <rect x="4" y="22" width="166" height="64" rx="2" fill="#fdfbf5" stroke="#ddd3be"/>
+        <text x="16" y="44" font-size="13" font-weight="700" fill="#2a5a8c">① /article</text>
+        <text x="16" y="63" font-size="11.5" fill="#211d16">AIが初稿を執筆</text>
+        <text x="16" y="78" font-size="10" fill="#6b6353">独立2ソース以上で裏取り</text>
+        <!-- box 2 -->
+        <rect x="200" y="22" width="150" height="64" rx="2" fill="#fdfbf5" stroke="#ddd3be"/>
+        <text x="212" y="44" font-size="13" font-weight="700" fill="#2a5a8c">② 添削</text>
+        <text x="212" y="63" font-size="11.5" fill="#211d16">人間が直して公開判断</text>
+        <text x="212" y="78" font-size="10" fill="#6b6353">唯一の人力工程</text>
+        <!-- box 3 -->
+        <rect x="380" y="22" width="180" height="64" rx="2" fill="#fdfbf5" stroke="#ddd3be"/>
+        <text x="392" y="44" font-size="13" font-weight="700" fill="#2a5a8c">③ /publish</text>
+        <text x="392" y="63" font-size="11.5" fill="#211d16">添削差分から教訓を抽出</text>
+        <text x="392" y="78" font-size="10" fill="#6b6353">AIが自分でLESSONS.mdに記録</text>
+        <!-- box 4 -->
+        <rect x="590" y="22" width="166" height="64" rx="2" fill="#fdfbf5" stroke="#ddd3be"/>
+        <text x="602" y="44" font-size="13" font-weight="700" fill="#2a5a8c">④ /retro</text>
+        <text x="602" y="63" font-size="11.5" fill="#211d16">3回続いた教訓は</text>
+        <text x="602" y="78" font-size="11.5" fill="#211d16">正式ルールに昇格</text>
+        <!-- 順方向の矢印 -->
+        <line x1="170" y1="54" x2="196" y2="54" stroke="#6b6353" stroke-width="1.4" marker-end="url(#ar)"/>
+        <line x1="350" y1="54" x2="376" y2="54" stroke="#6b6353" stroke-width="1.4" marker-end="url(#ar)"/>
+        <line x1="560" y1="54" x2="586" y2="54" stroke="#6b6353" stroke-width="1.4" marker-end="url(#ar)"/>
+        <!-- 戻りの朱ループ -->
+        <path d="M 673 86 L 673 122 L 87 122 L 87 92" fill="none" stroke="#c2451e" stroke-width="1.4" marker-end="url(#arShu)"/>
+        <text x="380" y="138" font-size="11.5" font-weight="700" fill="#c2451e" text-anchor="middle">次の初稿が、最初から良くなる</text>
+      </g>
+    </svg>
+  </figure>
+
+  <div class="stats">
+    <div class="stat"><div class="n shu">0<span style="font-size:13px">行</span></div><div class="l">オーナーが書いたコード</div></div>
+    <div class="stat"><div class="n">0<span style="font-size:13px">件</span></div><div class="l">保持している読者データ</div></div>
+    <div class="stat"><div class="n">¥0</div><div class="l">月間運用費</div></div>
+    <div class="stat"><div class="n">2+</div><div class="l">記事ごとの独立情報源</div></div>
+    <div class="stat"><div class="n">12<span style="font-size:13px">件</span></div><div class="l">運用2日で溜まった教訓</div></div>
+  </div>
+
+  <div class="cols">
+    <div class="col">
+      <h2><span class="num">一</span>設計: できないことは、しなくていい構造に</h2>
+      <p>サーバー管理もセキュリティ対策もできない。だから<b>守るものをゼロにした</b>。DBなし・サーバーなし・読者情報を一切持たない静的サイト。合言葉は「<span class="accent">全データを引っこ抜かれても問題ない</span>」。</p>
+      <h2 style="margin-top:5mm"><span class="num">二</span>指示は「社則」として書く</h2>
+      <p>AIへの指示はチャットで使い捨てにせず、<b>日本語のルールファイル</b>(CLAUDE.md+編集方針4冊)に蓄積する。会話は忘れられるが、ファイルは毎回読み込ませられる。出典ルール・文体・禁止事項まで全部ここにある。</p>
+      <div class="motto">非エンジニアの開発手法は、<br />「自然言語のルールファイル+フィードバックループ」。</div>
+    </div>
+    <div class="col">
+      <h2><span class="num">三</span>実際に踏んだ地雷(LESSONS.mdより)</h2>
+      <ul>
+        <li><span class="lesson-tag">裏取り</span>AIのウェブ要約は、同じ文書に複数の対象が出てくると<b>取り違える</b>。要約でなく一次資料そのもので確認するルールに。</li>
+        <li><span class="lesson-tag">出典</span>「草案と確定版」の比較記事を確定版同士の差だと誤読し、記事の骨子を書き直した。出典が<b>どの時点のテキストか</b>を必ず確認。</li>
+        <li><span class="lesson-tag">構成</span>覚書・条約は要約すると「第13項が第1・4・5項を参照」という<b>構造が壊れる</b>。原番号付き全文掲載を基本に。</li>
+        <li><span class="lesson-tag">運用</span>差分ゼロの回も「初稿で通用した点」を記録する。<b>成功パターンも強化学習</b>の対象。</li>
+      </ul>
+      <p style="margin-top:3mm; color:var(--ink-2)">誤報時は <b>/correct</b> で訂正し、訂正履歴もサイトで公開する。</p>
+    </div>
+  </div>
+
+  <footer class="foot">
+    <div class="urls">
+      サイト <span>news-media-8c6.pages.dev</span> ／ 仕組み全部 <span>github.com/Teto59/news-media</span>
+    </div>
+    <div>執筆: Claude(Sonnet 5 → Fable 5)/ 選定・添削・公開判断: 人間</div>
+  </footer>
+
+</div>
+</body>
+</html>
