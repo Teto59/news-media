@@ -1,5 +1,5 @@
 ---
-title: "Claude Fable 5、米輸出規制で停止 19日後に復旧"
+title: "Claude Fable 5、米輸出規制で停止　19日後に復旧"
 lead: "米国政府は6月12日、Anthropicに「Claude Fable 5」と「Claude Mythos 5」の輸出規制を指令しました。安全対策を回避する手法が見つかったことが理由です。Anthropicは国籍を即座に確認できないとして、世界中の利用者への提供を停止しました。6月30日に規制は解除され、7月1日にFable 5の提供が再開しました。"
 tldr:
   - "米政府は6月12日、Fable 5とMythos 5の輸出規制を発動"
